@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -33,16 +33,69 @@ const GalleryForm = ({
   onReset,
   onAddNew,
 }) => {
+
+  const [imageError, setImageError] = useState('');
+  const [imageRequirements] = useState({
+    maxSizeMB: 1,
+    requiredWidth: 800,  // Set your required dimensions
+    requiredHeight: 600
+  });
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     onChange({ ...formData, [name]: value });
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files[0]) {
-      onChange({ ...formData, image: e.target.files[0] });
+  // const handleFileChange = (e) => {
+  //   if (e.target.files[0]) {
+  //     onChange({ ...formData, image: e.target.files[0] });
+  //   }
+  // };
+
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImageError('');
+
+    // 1. Check if file is an image
+    if (!file.type.startsWith('image/')) {
+      setImageError('Please upload an image file');
+      return;
     }
+
+    // 2. Check file size (1MB = 1024*1024 bytes)
+    if (file.size > imageRequirements.maxSizeMB * 1024 * 1024) {
+      setImageError(`Image must be less than ${imageRequirements.maxSizeMB}MB`);
+      return;
+    }
+
+    // 3. Check image dimensions
+    const img = new Image();
+    img.onload = () => {
+      if (img.width !== imageRequirements.requiredWidth ||
+        img.height !== imageRequirements.requiredHeight) {
+        setImageError(
+          `Image must be exactly ${imageRequirements.requiredWidth}px × ${imageRequirements.requiredHeight}px`
+        );
+      } else {
+        // All validations passed
+        onChange({ ...formData, image: file });
+      }
+      URL.revokeObjectURL(img.src);
+    };
+
+    img.onerror = () => {
+      setImageError('Failed to load image');
+      URL.revokeObjectURL(img.src);
+    };
+
+    img.src = URL.createObjectURL(file);
   };
+
+
 
   const removeImage = () => {
     onChange({ ...formData, image: null });
@@ -183,6 +236,11 @@ const GalleryForm = ({
                   onChange={handleFileChange}
                 />
               </Button>
+              {imageError && (
+                <Alert severity="error" sx={{ mt: 1 }}>
+                  {imageError}
+                </Alert>
+              )}
             </FormControl>
           </Grid>
 

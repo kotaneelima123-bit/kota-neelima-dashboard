@@ -36,6 +36,7 @@ const navItems = [
   { name: 'Media', path: '/media' },
   { name: 'Press', path: '/press' },
   { name: 'Gallery', path: '/gallery' },
+  { name: 'Article', path: '/article' },
   { name: 'Policy Interventions', path: '/policy-interventions' },
   { name: 'Rural Distribution', path: '/rural-distribution' },
   { name: 'Initiatives', path: '/initiatives' },

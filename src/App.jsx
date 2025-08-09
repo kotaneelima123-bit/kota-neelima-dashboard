@@ -5,6 +5,7 @@ import DashboardLayout from './pages/DashboardLayout';
 import Media from './components/screens/Media/Media';
 import Gallery from './components/screens/Gallery/Gallery';
 import Press from './components/screens/Press/Press';
+import Article from './components/screens/Article/Article';
 import Login from './components/auth/Login';
 import DashboardHome from './pages/DashboardHome';
 import { ToastContainer } from 'react-toastify';
@@ -36,6 +37,7 @@ function App() {
             <Route path="media" element={<Media />} />
             <Route path="gallery" element={<Gallery />} />
             <Route path="press" element={<Press />} />
+            <Route path="article" element={<Article />} />
             {/* Add other protected routes here */}
           </Route>
 
