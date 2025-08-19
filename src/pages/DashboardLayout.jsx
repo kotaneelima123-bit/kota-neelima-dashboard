@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Button,
+  Collapse,
   CssBaseline,
   Divider,
   Drawer,
@@ -25,7 +26,9 @@ import {
 import {
   Menu as MenuIcon,
   Search as SearchIcon,
-  Logout as LogoutIcon
+  Logout as LogoutIcon,
+  ExpandLess,
+  ExpandMore
 } from '@mui/icons-material';
 import { Outlet, useNavigate, useLocation } from 'react-router';
 import logo from "../../public/img/logo.png"; // Adjust the path as necessary
@@ -37,6 +40,15 @@ const navItems = [
   { name: 'Press', path: '/press' },
   { name: 'Gallery', path: '/gallery' },
   { name: 'Article', path: '/article' },
+  {
+    name: 'Hakku Initiative',
+    path: '',
+    subItems: [
+      { name: 'Videos', path: '/hakku/videos' },
+      { name: 'Press Coverage', path: '/hakku/press_coverage' },
+      { name: 'Press Release', path: '/hakku/press_release' }
+    ]
+  },
   { name: 'Policy Interventions', path: '/policy-interventions' },
   { name: 'Rural Distribution', path: '/rural-distribution' },
   { name: 'Initiatives', path: '/initiatives' },
@@ -48,11 +60,16 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openHakku, setOpenHakku] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleHakkuToggle = () => {
+    setOpenHakku(!openHakku);
   };
 
   const handleLogout = () => {
@@ -83,26 +100,79 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
       <Divider />
       <List sx={{ flexGrow: 1 }}>
         {navItems.map((item) => (
-          <ListItem key={item.name} disablePadding>
-            <ListItemButton
-              selected={location.pathname === item.path}
-              onClick={() => navigate(item.path)}
-              sx={{
-                '&.Mui-selected': {
-                  backgroundColor: 'rgba(118, 3, 15, 0.1)',
-                  '& .MuiListItemText-primary': {
-                    color: '#76030F',
-                    fontWeight: 'bold'
-                  }
-                },
-                '&.Mui-selected:hover': {
-                  backgroundColor: 'rgba(118, 3, 15, 0.1)'
-                }
-              }}
-            >
-              <ListItemText primary={item.name} />
-            </ListItemButton>
-          </ListItem>
+          <React.Fragment key={item.name}>
+            {item.subItems ? (
+              <>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={handleHakkuToggle}
+                    sx={{
+                      '&.Mui-selected': {
+                        backgroundColor: 'rgba(118, 3, 15, 0.1)',
+                        '& .MuiListItemText-primary': {
+                          color: '#76030F',
+                          fontWeight: 'bold'
+                        }
+                      },
+                      '&.Mui-selected:hover': {
+                        backgroundColor: 'rgba(118, 3, 15, 0.1)'
+                      }
+                    }}
+                  >
+                    <ListItemText primary={item.name} />
+                    {openHakku ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                </ListItem>
+                <Collapse in={openHakku} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {item.subItems.map((subItem) => (
+                      <ListItemButton
+                        key={subItem.name}
+                        selected={location.pathname === subItem.path}
+                        onClick={() => navigate(subItem.path)}
+                        sx={{
+                          pl: 4,
+                          '&.Mui-selected': {
+                            backgroundColor: 'rgba(118, 3, 15, 0.1)',
+                            '& .MuiListItemText-primary': {
+                              color: '#76030F',
+                              fontWeight: 'bold'
+                            }
+                          },
+                          '&.Mui-selected:hover': {
+                            backgroundColor: 'rgba(118, 3, 15, 0.1)'
+                          }
+                        }}
+                      >
+                        <ListItemText primary={subItem.name} />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              </>
+            ) : (
+              <ListItem key={item.name} disablePadding>
+                <ListItemButton
+                  selected={location.pathname === item.path}
+                  onClick={() => navigate(item.path)}
+                  sx={{
+                    '&.Mui-selected': {
+                      backgroundColor: 'rgba(118, 3, 15, 0.1)',
+                      '& .MuiListItemText-primary': {
+                        color: '#76030F',
+                        fontWeight: 'bold'
+                      }
+                    },
+                    '&.Mui-selected:hover': {
+                      backgroundColor: 'rgba(118, 3, 15, 0.1)'
+                    }
+                  }}
+                >
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            )}
+          </React.Fragment>
         ))}
       </List>
       <Divider />
@@ -123,6 +193,7 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
     </Box>
   );
 
+  // Rest of your component remains the same...
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -213,7 +284,6 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
           flexGrow: 1,
           px: { sm: 2, md: 4 },
           py: { sm: 2, md: 2 },
-          // p: {sm:2, md: 4},
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           backgroundColor: '#f9f9f9',
           minHeight: '100vh'

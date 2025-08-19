@@ -6,6 +6,9 @@ import Media from './components/screens/Media/Media';
 import Gallery from './components/screens/Gallery/Gallery';
 import Press from './components/screens/Press/Press';
 import Article from './components/screens/Article/Article';
+import HakkuVideos from './components/screens/Hakku/Videos/HakkuVideos';
+import PressCoverage from './components/screens/Hakku/PressCoverage/PressCoverage';
+import PressRelease from './components/screens/Hakku/PressRelease/PressRelease';
 import Login from './components/auth/Login';
 import DashboardHome from './pages/DashboardHome';
 import { ToastContainer } from 'react-toastify';
@@ -38,6 +41,10 @@ function App() {
             <Route path="gallery" element={<Gallery />} />
             <Route path="press" element={<Press />} />
             <Route path="article" element={<Article />} />
+            <Route path="hakku/videos" element={<HakkuVideos />} />
+            <Route path="hakku/press_coverage" element={<PressCoverage />} />
+            <Route path="hakku/press_release" element={<PressRelease />} />
+
             {/* Add other protected routes here */}
           </Route>
 
