@@ -217,7 +217,7 @@ const Gallery = () => {
             image: item.image || null,
           });
         }}
-        onDelete={handleDelete}
+        onDelete={(item) => handleDelete(item._id)}
         selectedItems={selectedItems}
         onSelectionChange={handleSelectionChange}
       />
