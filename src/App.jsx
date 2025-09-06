@@ -11,6 +11,8 @@ import PressCoverage from './components/screens/Hakku/PressCoverage/PressCoverag
 import PressRelease from './components/screens/Hakku/PressRelease/PressRelease';
 import NationalPolitics from './components/screens/NationalPolitics/NationalPolitics';
 import TodayEvent from './components/screens/TodayEvent/TodayEvent';
+import Policy from './components/screens/Policy/Policy';
+import Journalism from './components/screens/Journalism/Journalism';
 import Login from './components/auth/Login';
 import DashboardHome from './pages/DashboardHome';
 import { ToastContainer } from 'react-toastify';
@@ -48,6 +50,10 @@ function App() {
             <Route path="hakku/press_release" element={<PressRelease />} />
             <Route path="national_politics" element={<NationalPolitics />} />
             <Route path="today_events" element={<TodayEvent />} />
+            <Route path="today_events" element={<TodayEvent />} />
+            <Route path="policy-interventions" element={<Policy />} />
+            <Route path="journalism" element={<Journalism />} />
+
 
             {/* Add other protected routes here */}
           </Route>

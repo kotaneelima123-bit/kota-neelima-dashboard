@@ -52,10 +52,10 @@ const navItems = [
   { name: 'National Politics', path: '/national_politics' },
   { name: "Today's Events", path: '/today_events' },
   { name: 'Policy Interventions', path: '/policy-interventions' },
-  { name: 'Rural Distribution', path: '/rural-distribution' },
-  { name: 'Initiatives', path: '/initiatives' },
-  { name: 'Awards', path: '/awards' },
-  { name: 'Journalism & Pol Commentary', path: '/journalism' }
+  // { name: 'Rural Distribution', path: '/rural-distribution' },
+  // { name: 'Initiatives', path: '/initiatives' },
+  // { name: 'Awards', path: '/awards' },
+  { name: 'Journalism', path: '/journalism' }
 ];
 
 const DashboardLayout = ({ setIsAuthenticated }) => {
