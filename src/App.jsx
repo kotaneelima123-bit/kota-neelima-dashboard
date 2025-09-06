@@ -9,6 +9,8 @@ import Article from './components/screens/Article/Article';
 import HakkuVideos from './components/screens/Hakku/Videos/HakkuVideos';
 import PressCoverage from './components/screens/Hakku/PressCoverage/PressCoverage';
 import PressRelease from './components/screens/Hakku/PressRelease/PressRelease';
+import NationalPolitics from './components/screens/NationalPolitics/NationalPolitics';
+import TodayEvent from './components/screens/TodayEvent/TodayEvent';
 import Login from './components/auth/Login';
 import DashboardHome from './pages/DashboardHome';
 import { ToastContainer } from 'react-toastify';
@@ -44,6 +46,8 @@ function App() {
             <Route path="hakku/videos" element={<HakkuVideos />} />
             <Route path="hakku/press_coverage" element={<PressCoverage />} />
             <Route path="hakku/press_release" element={<PressRelease />} />
+            <Route path="national_politics" element={<NationalPolitics />} />
+            <Route path="today_events" element={<TodayEvent />} />
 
             {/* Add other protected routes here */}
           </Route>

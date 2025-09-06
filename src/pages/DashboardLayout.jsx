@@ -49,6 +49,8 @@ const navItems = [
       { name: 'Press Release', path: '/hakku/press_release' }
     ]
   },
+  { name: 'National Politics', path: '/national_politics' },
+  { name: "Today's Events", path: '/today_events' },
   { name: 'Policy Interventions', path: '/policy-interventions' },
   { name: 'Rural Distribution', path: '/rural-distribution' },
   { name: 'Initiatives', path: '/initiatives' },
