@@ -5,15 +5,21 @@ import {
     Menu,
     MenuItem,
     Avatar,
-    Typography
+    Typography,
+    Chip,
+    Tooltip,
+    Alert,
+    Switch,
+    FormControlLabel
 } from '@mui/material';
-import { MoreVert, Edit, Delete, Refresh } from '@mui/icons-material';
+import { MoreVert, Edit, Delete, Refresh, Star, StarBorder } from '@mui/icons-material';
 import CRUDTable from '../../common/CRUDTable';
 import { format } from 'date-fns';
 
-const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh }) => {
+const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh, onToggleFeatured }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [processingFeatured, setProcessingFeatured] = useState(false);
 
     const handleMenuOpen = (event, item) => {
         setAnchorEl(event.currentTarget);
@@ -33,6 +39,22 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh }) => {
     const handleDelete = () => {
         onDelete(selectedItem._id);
         handleMenuClose();
+    };
+
+    const handleToggleFeatured = async () => {
+        if (selectedItem) {
+            setProcessingFeatured(true);
+            await onToggleFeatured(selectedItem._id, selectedItem.featured, selectedItem.status);
+            setProcessingFeatured(false);
+            handleMenuClose();
+        }
+    };
+
+    const handleSwitchToggle = async (item) => {
+        setSelectedItem(item);
+        setProcessingFeatured(true);
+        await onToggleFeatured(item._id, item.featured, item.status);
+        setProcessingFeatured(false);
     };
 
     const columns = [
@@ -67,6 +89,9 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh }) => {
                 <Box>
                     <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
                         {item.title}
+                        {item.featured && (
+                            <Star color="warning" sx={{ fontSize: 16, ml: 0.5, verticalAlign: 'text-bottom' }} />
+                        )}
                     </Typography>
                     {item.date && (
                         <Typography variant="caption" color="text.secondary">
@@ -94,6 +119,39 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh }) => {
             )
         },
         {
+            field: 'status',
+            headerName: 'Status',
+            render: (item) => (
+                <Chip
+                    label={item.status || 'inactive'}
+                    color={item.status === 'active' ? 'success' : 'default'}
+                    size="small"
+                />
+            )
+        },
+        {
+            field: 'featured',
+            headerName: 'Featured',
+            render: (item) => (
+                <Tooltip title={item.featured ? 'Featured post' : 'Set as featured'}>
+                    <Box>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={item.featured || false}
+                                    onChange={() => handleSwitchToggle(item)}
+                                    disabled={processingFeatured || loading || item.status !== 'active'}
+                                    color="warning"
+                                />
+                            }
+                            label={item.featured ? "Featured" : "Feature"}
+                            labelPlacement="start"
+                        />
+                    </Box>
+                </Tooltip>
+            )
+        },
+        {
             field: 'actions',
             headerName: 'Actions',
             render: (item) => (
@@ -114,6 +172,22 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh }) => {
                             <Edit fontSize="small" sx={{ mr: 1 }} />
                             Edit
                         </MenuItem>
+                        <MenuItem
+                            onClick={handleToggleFeatured}
+                            disabled={processingFeatured || selectedItem?.status !== 'active'}
+                        >
+                            {selectedItem?.featured ? (
+                                <>
+                                    <StarBorder fontSize="small" sx={{ mr: 1 }} />
+                                    Unfeature
+                                </>
+                            ) : (
+                                <>
+                                    <Star fontSize="small" sx={{ mr: 1 }} />
+                                    Set as Featured
+                                </>
+                            )}
+                        </MenuItem>
                         <MenuItem onClick={handleDelete}>
                             <Delete fontSize="small" sx={{ mr: 1 }} />
                             Delete
@@ -124,6 +198,8 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh }) => {
         },
     ];
 
+    const featuredEvents = data.filter(item => item.featured);
+
     return (
         <Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
@@ -131,6 +207,12 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh }) => {
                     <Refresh />
                 </IconButton>
             </Box>
+
+            {featuredEvents.length > 1 && (
+                <Alert severity="warning" sx={{ mb: 2 }}>
+                    Multiple events are marked as featured. Only one event should be featured at a time.
+                </Alert>
+            )}
 
             <CRUDTable
                 columns={columns}
@@ -140,8 +222,6 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh }) => {
                 itemsPerPage={10}
                 totalItems={data.length}
                 onPageChange={() => { }}
-                // onEdit={onEdit}
-                // onDelete={onDelete}
             />
         </Box>
     );

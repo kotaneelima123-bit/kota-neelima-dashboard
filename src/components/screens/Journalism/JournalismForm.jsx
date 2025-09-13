@@ -151,63 +151,6 @@ const JournalismForm = ({
                                 sx={{ mb: 2 }}
                             />
 
-                            {/* <DatePicker
-                                label="Date"
-                                value={formData.date ? parseApiDate(formData.date) : null}
-                                onChange={handleDateChange}
-                                renderInput={(params) => (
-                                    <TextField {...params} fullWidth sx={{ mb: 2 }} />
-                                )}
-                            /> */}
-
-                            {/* <FormControl fullWidth margin="normal">
-                                <FormLabel component="legend" sx={{ mb: 1 }}>PDF File</FormLabel>
-
-                                {formData.pdf ? (
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                        <Typography variant="body2" sx={{ mr: 2 }}>
-                                            {typeof formData.pdf === 'string' ? 'PDF attached' : formData.pdf.name}
-                                        </Typography>
-                                        <IconButton
-                                            onClick={removePdf}
-                                            size="small"
-                                        >
-                                            <CloseIcon fontSize="small" />
-                                        </IconButton>
-                                    </Box>
-                                ) : (
-                                    <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-                                        No PDF attached
-                                    </Typography>
-                                )}
-
-                                <Button
-                                    variant="outlined"
-                                    component="label"
-                                    fullWidth
-                                    sx={{
-                                        borderColor: '#919eab',
-                                        color: '#212b36',
-                                        '&:hover': {
-                                            borderColor: '#212b36'
-                                        }
-                                    }}
-                                >
-                                    {formData.pdf ? 'Change PDF' : 'Upload PDF'}
-                                    <input
-                                        type="file"
-                                        hidden
-                                        accept=".pdf,application/pdf"
-                                        onChange={handleFileChange}
-                                    />
-                                </Button>
-                                {pdfError && (
-                                    <Alert severity="error" sx={{ mt: 1 }}>
-                                        {pdfError}
-                                    </Alert>
-                                )}
-                            </FormControl> */}
-
                             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
                                 <Button
                                     type="submit"

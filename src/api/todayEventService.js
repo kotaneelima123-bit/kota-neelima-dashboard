@@ -45,3 +45,25 @@ export const deleteEvent = async (eventId) => {
         throw error;
     }
 };
+
+// New function to toggle featured event
+export const toggleFeaturedEvent = async (eventId, featuredStatus) => {
+    try {
+        const response = await apiClient.patch(`${TODAY_EVENT}/featured/${eventId}`, {
+            featured: !featuredStatus
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// New function to get featured event
+export const getFeaturedEvent = async () => {
+    try {
+        const response = await apiClient.get(`${TODAY_EVENT}/featured`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

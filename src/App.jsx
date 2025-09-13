@@ -13,7 +13,12 @@ import NationalPolitics from './components/screens/NationalPolitics/NationalPoli
 import TodayEvent from './components/screens/TodayEvent/TodayEvent';
 import Policy from './components/screens/Policy/Policy';
 import Journalism from './components/screens/Journalism/Journalism';
+import RuralDistress from './components/screens/RuralDistress/Rural_Distress/RuralDistress';
+import Photos from './components/screens/RuralDistress/Photos/Photos';
+import Books from './components/screens/RuralDistress/Books/Books';
 import Login from './components/auth/Login';
+import Conference from './components/screens/RuralDistress/Conference/Conference';
+import RuralArticle from './components/screens/RuralDistress/Article/Article';
 import DashboardHome from './pages/DashboardHome';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -53,6 +58,16 @@ function App() {
             <Route path="today_events" element={<TodayEvent />} />
             <Route path="policy-interventions" element={<Policy />} />
             <Route path="journalism" element={<Journalism />} />
+            <Route path="rural-distress" element={<RuralDistress />} />
+            <Route path="rural-distress/photos" element={<Photos />} />
+            <Route path="rural-distress/conference" element={<Conference />} />
+            <Route path="rural-distress/books" element={<Books />} />
+            <Route path="rural-distress/articles" element={<RuralArticle />} />
+
+
+
+
+
 
 
             {/* Add other protected routes here */}

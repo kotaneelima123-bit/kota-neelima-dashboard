@@ -1,0 +1,45 @@
+import React from 'react';
+import CRUDTable from '../../../common/CRUDTable';
+import { Avatar, Box, Link, Typography } from '@mui/material';
+import { InsertDriveFile } from '@mui/icons-material';
+
+const ArticleTable = ({ data, loading, totalItems, page, itemsPerPage, onPageChange, onEdit, onDelete }) => {
+    const columns = [
+        {
+            field: 'title',
+            headerName: 'Title',
+            width: 300,
+            render: (item) => (
+                <Typography variant="body2" noWrap>
+                    {item.title || 'No title'}
+                </Typography>
+            ),
+        },
+        {
+            field: 'url',
+            headerName: 'URL',
+            width: 300,
+            render: (item) => (
+                <Typography variant="body2" noWrap>
+                    {item.url || 'No url'}
+                </Typography>
+            ),
+        },
+    ];
+
+    return (
+        <CRUDTable
+            columns={columns}
+            data={data}
+            loading={loading}
+            page={page}
+            itemsPerPage={itemsPerPage}
+            totalItems={totalItems}
+            onPageChange={onPageChange}
+            onEdit={onEdit}
+            onDelete={onDelete}
+        />
+    );
+};
+
+export default ArticleTable;

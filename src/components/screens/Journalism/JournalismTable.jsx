@@ -20,12 +20,6 @@ const JournalismTable = ({ data, loading, totalItems, page, itemsPerPage, onPage
                 </Typography>
             ),
         },
-        // {
-        //     field: 'date',
-        //     headerName: 'Date',
-        //     width: 120,
-        //     render: (item) => item.date // Display raw API value
-        // },
         {
             field: 'url',
             headerName: 'URL',
@@ -40,23 +34,6 @@ const JournalismTable = ({ data, loading, totalItems, page, itemsPerPage, onPage
                 )
             ),
         },
-        // {
-        //     field: 'pdf',
-        //     headerName: 'PDF',
-        //     width: 150,
-        //     render: (item) => (
-        //         item.pdf ? (
-        //             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        //                 <InsertDriveFile color="primary" sx={{ mr: 1 }} />
-        //                 <Typography variant="body2">
-        //                     {typeof item.pdf === 'string' ? 'View PDF' : item.pdf.name}
-        //                 </Typography>
-        //             </Box>
-        //         ) : (
-        //             'No PDF'
-        //         )
-        //     ),
-        // },
     ];
 
     return (

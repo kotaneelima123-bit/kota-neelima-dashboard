@@ -37,6 +37,7 @@ const TodayEvent = () => {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
     const [confirmDialog, setConfirmDialog] = useState({ open: false });
     const [formOpen, setFormOpen] = useState(false);
+    const [processingFeatured, setProcessingFeatured] = useState(false);
 
     useEffect(() => {
         fetchEvents();
@@ -84,6 +85,31 @@ const TodayEvent = () => {
             showSnackbar('Error deleting event', 'error');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleToggleFeatured = async (id, currentFeaturedStatus, status) => {
+        if (status !== 'active') {
+            showSnackbar('Only active events can be featured', 'warning');
+            return;
+        }
+
+        // Check if trying to feature an event when another is already featured
+        const featuredEvents = events.filter(event => event.featured && event._id !== id);
+        if (!currentFeaturedStatus && featuredEvents.length > 0) {
+            showSnackbar(`You already have a featured post (${featuredEvents[0].title}). Please unfeature it first.`, 'warning');
+            return;
+        }
+
+        setProcessingFeatured(true);
+        try {
+            await todayEventService.toggleFeaturedEvent(id, currentFeaturedStatus);
+            showSnackbar(`Event ${currentFeaturedStatus ? 'unfeatured' : 'featured'} successfully`);
+            await fetchEvents();
+        } catch (error) {
+            showSnackbar('Error updating featured status', 'error');
+        } finally {
+            setProcessingFeatured(false);
         }
     };
 
@@ -159,10 +185,11 @@ const TodayEvent = () => {
 
             <TodayEventTable
                 data={events}
-                loading={loading}
+                loading={loading || processingFeatured}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onRefresh={fetchEvents}
+                onToggleFeatured={handleToggleFeatured}
             />
 
             <TodayEventForm

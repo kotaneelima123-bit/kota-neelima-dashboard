@@ -49,6 +49,18 @@ const navItems = [
       { name: 'Press Release', path: '/hakku/press_release' }
     ]
   },
+  {
+    name: 'Rural Distress',
+    path: '',
+    subItems: [
+      { name: 'Rural Distress', path: '/rural-distress' },
+      { name: 'Photos', path: '/rural-distress/photos' },
+      { name: 'Conference', path: '/rural-distress/conference' },
+      { name: 'Books', path: '/rural-distress/books' },
+      { name: 'Articles', path: '/rural-distress/articles' }
+      // { name: 'Press Release', path: '/hakku/press_release' }
+    ]
+  },
   { name: 'National Politics', path: '/national_politics' },
   { name: "Today's Events", path: '/today_events' },
   { name: 'Policy Interventions', path: '/policy-interventions' },
@@ -62,7 +74,7 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openHakku, setOpenHakku] = useState(false);
+  const [openMenus, setOpenMenus] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -70,8 +82,11 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleHakkuToggle = () => {
-    setOpenHakku(!openHakku);
+  const handleMenuToggle = (menuName) => {
+    setOpenMenus(prevState => ({
+      ...prevState,
+      [menuName]: !prevState[menuName]
+    }));
   };
 
   const handleLogout = () => {
@@ -107,7 +122,7 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
               <>
                 <ListItem disablePadding>
                   <ListItemButton
-                    onClick={handleHakkuToggle}
+                    onClick={() => handleMenuToggle(item.name)}
                     sx={{
                       '&.Mui-selected': {
                         backgroundColor: 'rgba(118, 3, 15, 0.1)',
@@ -122,10 +137,10 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
                     }}
                   >
                     <ListItemText primary={item.name} />
-                    {openHakku ? <ExpandLess /> : <ExpandMore />}
+                    {openMenus[item.name] ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
                 </ListItem>
-                <Collapse in={openHakku} timeout="auto" unmountOnExit>
+                <Collapse in={openMenus[item.name]} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     {item.subItems.map((subItem) => (
                       <ListItemButton
