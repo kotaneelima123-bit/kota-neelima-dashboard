@@ -94,12 +94,7 @@ const TodayEvent = () => {
             return;
         }
 
-        // Check if trying to feature an event when another is already featured
-        const featuredEvents = events.filter(event => event.featured && event._id !== id);
-        if (!currentFeaturedStatus && featuredEvents.length > 0) {
-            showSnackbar(`You already have a featured post (${featuredEvents[0].title}). Please unfeature it first.`, 'warning');
-            return;
-        }
+        // REMOVED: The check that prevents multiple featured posts
 
         setProcessingFeatured(true);
         try {

@@ -198,7 +198,7 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh, onToggleF
         },
     ];
 
-    const featuredEvents = data.filter(item => item.featured);
+    // REMOVED: The warning about multiple featured events
 
     return (
         <Box>
@@ -207,12 +207,6 @@ const TodayEventTable = ({ data, loading, onEdit, onDelete, onRefresh, onToggleF
                     <Refresh />
                 </IconButton>
             </Box>
-
-            {featuredEvents.length > 1 && (
-                <Alert severity="warning" sx={{ mb: 2 }}>
-                    Multiple events are marked as featured. Only one event should be featured at a time.
-                </Alert>
-            )}
 
             <CRUDTable
                 columns={columns}
