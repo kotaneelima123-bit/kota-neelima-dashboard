@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { showErrorToast } from '../utils/toastUtils'; // We'll create this
 
+// const baseURL = import.meta.env.VITE_API_BASE_URL_DEV; // Change as needed for different environments
+const baseURL = import.meta.env.VITE_API_BASE_URL_PROD; // Change as needed for different environments
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -29,7 +32,7 @@ apiClient.interceptors.response.use(
   (error) => {
     const { response } = error;
     let errorMessage = 'An unexpected error occurred';
-    
+
     if (response) {
       switch (response.status) {
         case 400:
