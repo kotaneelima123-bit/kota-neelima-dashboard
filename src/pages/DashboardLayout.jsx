@@ -67,7 +67,17 @@ const navItems = [
   // { name: 'Rural Distribution', path: '/rural-distribution' },
   // { name: 'Initiatives', path: '/initiatives' },
   // { name: 'Awards', path: '/awards' },
-  { name: 'Journalism', path: '/journalism' }
+  { name: 'Journalism', path: '/journalism' },
+  // New Profile menu with sub-items
+  {
+    name: 'Profile',
+    path: '',
+    subItems: [
+      { name: 'Bio', path: '/profile/bio' },
+      { name: 'Photos', path: '/profile/photos' },
+      { name: 'Articles', path: '/profile/articles' }
+    ]
+  }
 ];
 
 const DashboardLayout = ({ setIsAuthenticated }) => {

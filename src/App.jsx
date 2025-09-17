@@ -16,12 +16,15 @@ import Journalism from './components/screens/Journalism/Journalism';
 import RuralDistress from './components/screens/RuralDistress/Rural_Distress/RuralDistress';
 import Photos from './components/screens/RuralDistress/Photos/Photos';
 import Books from './components/screens/RuralDistress/Books/Books';
+import BioScreen from './components/screens/Profile/Bio/Bio';
 import Login from './components/auth/Login';
 import Conference from './components/screens/RuralDistress/Conference/Conference';
 import RuralArticle from './components/screens/RuralDistress/Article/Article';
 import DashboardHome from './pages/DashboardHome';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PhotosScreen from './components/screens/Profile/Photos/PhotosScreen';
+import ArticleScreen from './components/screens/Profile/Articles/ArticleScreen';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -63,6 +66,10 @@ function App() {
             <Route path="rural-distress/conference" element={<Conference />} />
             <Route path="rural-distress/books" element={<Books />} />
             <Route path="rural-distress/articles" element={<RuralArticle />} />
+            <Route path="profile/bio" element={<BioScreen />} />
+            <Route path="profile/photos" element={<PhotosScreen />} />
+            <Route path="profile/articles" element={<ArticleScreen />} />
+
 
 
 
