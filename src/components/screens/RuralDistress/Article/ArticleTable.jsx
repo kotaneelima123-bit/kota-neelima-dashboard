@@ -16,6 +16,16 @@ const ArticleTable = ({ data, loading, totalItems, page, itemsPerPage, onPageCha
             ),
         },
         {
+            field: 'description',
+            headerName: 'Description',
+            width: 300,
+            render: (item) => (
+                <Typography variant="body2" noWrap>
+                    {item.description || 'No description'}
+                </Typography>
+            ),
+        },
+        {
             field: 'url',
             headerName: 'URL',
             width: 300,

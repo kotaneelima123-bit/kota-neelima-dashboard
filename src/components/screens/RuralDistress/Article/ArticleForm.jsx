@@ -82,6 +82,18 @@ const ArticleForm = ({
                             <TextField
                                 fullWidth
                                 margin="normal"
+                                label="Description"
+                                name="description"
+                                value={formData.description}
+                                onChange={handleInputChange}
+                                multiline
+                                rows={4}
+                                sx={{ mb: 2, width: '80vw', maxWidth: 900 }}
+                            />
+
+                            <TextField
+                                fullWidth
+                                margin="normal"
                                 label="URL"
                                 name="url"
                                 value={formData.url}
