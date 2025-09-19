@@ -7,6 +7,7 @@ import * as pressService from '../../../api/pressService';
 const Press = () => {
     const [formData, setFormData] = useState({
         title: '',
+        url: '',
         hindiTitle: '',
         teluguTitle: '',
         date: null,
@@ -65,6 +66,7 @@ const Press = () => {
     const resetForm = () => {
         setFormData({
             title: '',
+            url: '',
             hindiTitle: '',
             teluguTitle: '',
             date: null,
@@ -100,6 +102,7 @@ const Press = () => {
                     setCurrentItem(item);
                     setFormData({
                         title: item.title,
+                        url: item.url || '',
                         hindiTitle: item.hindiTitle || '',
                         teluguTitle: item.teluguTitle || '',
                         date: item.date, // Keep raw API value

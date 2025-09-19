@@ -201,6 +201,16 @@ const PressForm = ({
                             <TextField
                                 fullWidth
                                 margin="normal"
+                                label="URL"
+                                name="url"
+                                value={formData.url}
+                                onChange={handleInputChange}
+                                sx={{ mb: 2 }}
+                            />
+
+                            <TextField
+                                fullWidth
+                                margin="normal"
                                 label="Hindi Title"
                                 name="hindiTitle"
                                 value={formData.hindiTitle}
