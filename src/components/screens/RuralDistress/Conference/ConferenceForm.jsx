@@ -21,6 +21,8 @@ import {
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Add as AddIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
+import { DatePicker } from '@mui/x-date-pickers';
+import { format, parse } from 'date-fns';
 
 const ConferenceForm = ({
     formData,
@@ -35,6 +37,25 @@ const ConferenceForm = ({
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         onChange({ ...formData, [name]: value });
+    };
+
+    const parseApiDate = (dateString) => {
+        if (!dateString) return null;
+        // Adjust the format to match your API's date format (e.g., 'dd-MM-yyyy')
+        return parse(dateString, 'dd-MM-yyyy', new Date());
+    };
+
+    const formatForApi = (date, formatStr) => {
+        if (!date) return '';
+        return format(date, formatStr);
+    };
+
+    // Update your handleDateChange
+    const handleDateChange = (date) => {
+        onChange({
+            ...formData,
+            date: date ? formatForApi(date, 'dd-MM-yyyy') : ''
+        });
     };
 
 
@@ -78,6 +99,17 @@ const ConferenceForm = ({
                                 rows={8}
                                 sx={{ mb: 2, width: '80vw', maxWidth: 900 }}
                             />
+                            <Box>
+                                <DatePicker
+                                    label="Date"
+                                    value={formData.date ? parseApiDate(formData.date) : null}
+                                    onChange={handleDateChange}
+                                    renderInput={(params) => (
+                                        <TextField {...params} fullWidth sx={{ mb: 2 }} />
+                                    )}
+                                />
+                            </Box>
+
 
                             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
                                 <Button

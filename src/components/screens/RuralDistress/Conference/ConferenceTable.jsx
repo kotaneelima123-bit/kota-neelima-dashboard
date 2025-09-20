@@ -15,6 +15,12 @@ const ConferenceTable = ({ data, loading, totalItems, page, itemsPerPage, onPage
                 </Typography>
             ),
         },
+        {
+            field: 'date',
+            headerName: 'Date',
+            width: 120,
+            render: (item) => item.date // Display raw API value
+        },
     ];
 
     return (

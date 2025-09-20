@@ -29,6 +29,12 @@ const PhotosTable = ({ data, loading, totalItems, page, itemsPerPage, onPageChan
             ),
         },
         { field: 'title', headerName: 'Title' },
+        {
+            field: 'date',
+            headerName: 'Date',
+            width: 120,
+            render: (item) => item.date // Display raw API value
+        },
     ];
 
     return (

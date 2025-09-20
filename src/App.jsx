@@ -25,6 +25,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PhotosScreen from './components/screens/Profile/Photos/PhotosScreen';
 import ArticleScreen from './components/screens/Profile/Articles/ArticleScreen';
+import Podcast from './components/screens/Podcast/Podcast';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -69,6 +70,8 @@ function App() {
             <Route path="profile/bio" element={<BioScreen />} />
             <Route path="profile/photos" element={<PhotosScreen />} />
             <Route path="profile/articles" element={<ArticleScreen />} />
+            <Route path="podcast" element={<Podcast />} />
+
 
 
 

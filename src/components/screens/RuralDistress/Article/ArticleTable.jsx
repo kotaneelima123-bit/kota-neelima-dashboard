@@ -35,6 +35,12 @@ const ArticleTable = ({ data, loading, totalItems, page, itemsPerPage, onPageCha
                 </Typography>
             ),
         },
+        {
+            field: 'date',
+            headerName: 'Date',
+            width: 120,
+            render: (item) => item.date // Display raw API value
+        },
     ];
 
     return (

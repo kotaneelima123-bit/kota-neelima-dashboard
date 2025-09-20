@@ -6,7 +6,8 @@ import * as ruralDistressService from '../../../../api/ruralDistressService';
 
 const RuralDistress = () => {
     const [formData, setFormData] = useState({
-        description: ''
+        description: '',
+        date: null,
     });
     const [currentItem, setCurrentItem] = useState(null);
     const [articleItems, setArticleItems] = useState([]);
@@ -60,6 +61,7 @@ const RuralDistress = () => {
     const resetForm = () => {
         setFormData({
             description: '',
+            date: null,
         });
         setCurrentItem(null);
     };
@@ -90,6 +92,7 @@ const RuralDistress = () => {
                     setCurrentItem(item);
                     setFormData({
                         description: item.description || '',
+                        date: item.date || null,
                     });
                 }}
 

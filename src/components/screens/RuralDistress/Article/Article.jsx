@@ -9,6 +9,7 @@ const RuralArticle = () => {
         title: '',
         description: '',
         url: '',
+        date: null,
     });
     const [currentItem, setCurrentItem] = useState(null);
     const [articleItems, setArticleItems] = useState([]);
@@ -64,6 +65,7 @@ const RuralArticle = () => {
             title: '',
             description: '',
             url: '',
+            date: null,
         });
         setCurrentItem(null);
     };
@@ -96,6 +98,7 @@ const RuralArticle = () => {
                         title: item.title || '',
                         description: item.description || '',
                         url: item.url || '',
+                        date: item.date || null,
                     });
                 }}
 

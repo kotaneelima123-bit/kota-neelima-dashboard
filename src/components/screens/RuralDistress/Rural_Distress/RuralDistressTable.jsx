@@ -15,6 +15,12 @@ const RuralDistressTable = ({ data, loading, totalItems, page, itemsPerPage, onP
                 </Typography>
             ),
         },
+        {
+            field: 'date',
+            headerName: 'Date',
+            width: 120,
+            render: (item) => item.date // Display raw API value
+        },
     ];
 
     return (

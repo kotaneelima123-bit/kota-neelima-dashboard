@@ -8,6 +8,7 @@ const Photos = () => {
     const [formData, setFormData] = useState({
         title: '',
         image: null,
+        date: null,
     });
     const [currentItem, setCurrentItem] = useState(null);
     const [pressItems, setPressItems] = useState([]);
@@ -62,6 +63,7 @@ const Photos = () => {
         setFormData({
             title: '',
             image: null,
+            date: null,
         });
         setCurrentItem(null);
     };
@@ -93,6 +95,7 @@ const Photos = () => {
                     setFormData({
                         title: item.title,
                         image: item.imageUrl || null,
+                        date: item.date || null,
                     });
                 }}
                 onDelete={(item) => handleDelete(item._id)}

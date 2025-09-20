@@ -77,7 +77,9 @@ const navItems = [
       { name: 'Photos', path: '/profile/photos' },
       { name: 'Articles', path: '/profile/articles' }
     ]
-  }
+  },
+  { name: 'Podcast', path: '/podcast' },
+
 ];
 
 const DashboardLayout = ({ setIsAuthenticated }) => {
