@@ -42,8 +42,8 @@ const Gallery = () => {
   const fetchGalleryItems = async () => {
     setLoading(true);
     try {
-      const { galleries } = await galleryService.getGalleryItems();
-      setGalleryItems(galleries || []);
+      const { data } = await galleryService.getGalleryItems();
+      setGalleryItems(data || []);
     } catch (error) {
       showSnackbar('Error fetching gallery items', 'error');
     } finally {
