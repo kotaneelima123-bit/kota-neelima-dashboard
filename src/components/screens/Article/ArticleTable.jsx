@@ -1,10 +1,36 @@
 import React from 'react';
 import CRUDTable from '../../common/CRUDTable';
-import { Avatar, Box, Link, Typography } from '@mui/material';
+import { Avatar, Box, Link, Typography, Checkbox, Tooltip, Chip } from '@mui/material';
+import { Star } from '@mui/icons-material';
+
 import { InsertDriveFile } from '@mui/icons-material';
 
-const ArticleTable = ({ data, loading, totalItems, page, itemsPerPage, onPageChange, onEdit, onDelete }) => {
+const ArticleTable = ({ data, loading, totalItems, page, itemsPerPage, onPageChange, onEdit, onDelete, selectedItems,
+    onSelectionChange }) => {
     const columns = [
+        {
+            field: 'selection',
+            headerName: 'Select for Homepage',
+            render: (item) => (
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Checkbox
+                        checked={selectedItems.includes(item._id)}
+                        onChange={(e) => {
+                            const newSelectedItems = e.target.checked
+                                ? [...selectedItems, item._id]
+                                : selectedItems.filter(id => id !== item._id);
+                            onSelectionChange(newSelectedItems);
+                        }}
+                        disabled={selectedItems.length >= 6 && !selectedItems.includes(item._id)}
+                    />
+                    {selectedItems.includes(item._id) && (
+                        <Tooltip title="Selected for homepage article">
+                            <Star color="primary" sx={{ fontSize: 18 }} />
+                        </Tooltip>
+                    )}
+                </Box>
+            ),
+        },
         {
             field: 'title',
             headerName: 'Title',

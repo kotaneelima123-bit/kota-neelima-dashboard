@@ -19,3 +19,23 @@ export const getHomepageGallery = async () => {
         throw error;
     }
 };
+
+export const setHomepageArticle = async (articleItemIds) => {
+    try {
+        const response = await apiClient.post('/api/admin/article/set', {
+            articleItems: articleItemIds
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getHomepageArticle = async () => {
+    try {
+        const response = await apiClient.get('/api/admin/article/get');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

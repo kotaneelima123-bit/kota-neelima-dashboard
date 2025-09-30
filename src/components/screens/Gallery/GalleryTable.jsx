@@ -9,12 +9,19 @@ const GalleryTable = ({
     totalItems,
     page,
     itemsPerPage,
+    categories,
     onPageChange,
     onEdit,
     onDelete,
     selectedItems,
     onSelectionChange
 }) => {
+    // const getCategoryName = (categoryId) => {
+    //     if (!categoryId) return 'No Category';
+    //     const category = categories.find(cat => cat._id === categoryId);
+    //     return category ? category.name : 'Unknown Category';
+    // };
+
     const columns = [
         {
             field: 'selection',
@@ -97,6 +104,18 @@ const GalleryTable = ({
                         </Tooltip>
                     )}
                 </Box>
+            )
+        },
+        {
+            field: 'category',
+            headerName: 'Category',
+            render: (item) => (
+                <Chip
+                    label={item.category?.name || 'No Category'}
+                    variant={item.category ? "filled" : "outlined"}
+                    color={item.category ? "primary" : "default"}
+                    size="small"
+                />
             )
         },
         {

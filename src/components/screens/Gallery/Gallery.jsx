@@ -8,11 +8,15 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  Tabs,
+  Tab
 } from '@mui/material';
 import GalleryForm from './GalleryForm';
 import GalleryTable from './GalleryTable';
+import CategoryManager from './CategoryManager';
 import * as galleryService from '../../../api/galleryService';
+import * as galleryCategoryService from '../../../api/galleryCategoryService';
 import * as homepageService from '../../../api/homepageService';
 
 const Gallery = () => {
@@ -23,20 +27,24 @@ const Gallery = () => {
     date: null,
     time: null,
     image: null,
+    categoryId: ''
   });
   const [currentItem, setCurrentItem] = useState(null);
   const [galleryItems, setGalleryItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [page, setPage] = useState(1);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [confirmDialog, setConfirmDialog] = useState({ open: false });
+  const [activeTab, setActiveTab] = useState(0);
   const itemsPerPage = 5;
 
   useEffect(() => {
     fetchGalleryItems();
     fetchHomepageGalleryItems();
+    fetchCategories();
   }, []);
 
   const fetchGalleryItems = async () => {
@@ -51,17 +59,26 @@ const Gallery = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const { data } = await galleryCategoryService.getGalleryCategories();
+      console.log('Fetched categories:', data);
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      showSnackbar('Error fetching categories', 'error');
+    }
+  };
+
   const fetchHomepageGalleryItems = async () => {
     try {
       const response = await homepageService.getHomepageGallery();
-      // Extract just the IDs from the galleryItems array
       if (response.success && response.data && response.data.galleryItems) {
         const homepageItemIds = response.data.galleryItems.map(item => item._id);
         setSelectedItems(homepageItemIds);
       }
     } catch (error) {
       console.error('Error fetching homepage gallery items:', error);
-      // Don't show error to user as this is a background operation
     }
   };
 
@@ -88,7 +105,6 @@ const Gallery = () => {
     setLoading(true);
     try {
       await galleryService.deleteGalleryItem(id);
-      // Remove from selection if it was selected
       setSelectedItems(prev => prev.filter(itemId => itemId !== id));
       await fetchGalleryItems();
       showSnackbar('Item deleted successfully');
@@ -100,7 +116,6 @@ const Gallery = () => {
   };
 
   const handleSelectionChange = (newSelectedItems) => {
-    // Limit selection to 6 items maximum
     if (newSelectedItems.length > 6) {
       showSnackbar('Maximum 6 items can be selected for homepage', 'info');
       return;
@@ -129,6 +144,7 @@ const Gallery = () => {
       date: null,
       time: null,
       image: null,
+      categoryId: ''
     });
     setCurrentItem(null);
   };
@@ -141,86 +157,111 @@ const Gallery = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  const handleCategoryUpdate = () => {
+    fetchCategories(); // Refresh categories after CRUD operations
+  };
+
   return (
     <Box sx={{ width: '100%', p: 3 }}>
-      {/* Selection Info and Action Button */}
-
-
-      <GalleryForm
-        formData={formData}
-        currentItem={currentItem}
-        loading={loading}
-        onChange={setFormData}
-        onSubmit={handleSubmit}
-        onReset={resetForm}
-        onAddNew={() => {
-          resetForm();
-          setCurrentItem(null);
-        }}
-      />
-
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        mb: 2,
-        p: 1.5,
-        backgroundColor: 'grey.50',
-        borderRadius: 1
-      }}>
-        <Box>
-          <Chip
-            label={`${selectedItems.length}/6 selected`}
-            color={selectedItems.length > 0 ? "primary" : "default"}
-            variant={selectedItems.length > 0 ? "filled" : "outlined"}
-          />
-          {selectedItems.length > 0 && (
-            <Button
-              size="small"
-              color="secondary"
-              onClick={() => setSelectedItems([])}
-              sx={{ ml: 1 }}
-            >
-              Clear Selection
-            </Button>
-          )}
-        </Box>
-
-        <Button
-          variant="contained"
-          disabled={selectedItems.length === 0}
-          onClick={() => setConfirmDialog({
-            open: true,
-            title: "Set as Homepage Gallery",
-            message: `Are you sure you want to set ${selectedItems.length} image(s) as the homepage gallery? These images will be displayed on your website's landing page.`
-          })}
-        >
-          Set as Homepage Gallery
-        </Button>
+      {/* Tabs for Gallery and Category Management */}
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+        <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
+          <Tab label="Gallery Management" />
+          <Tab label="Category Management" />
+        </Tabs>
       </Box>
 
-      <GalleryTable
-        data={galleryItems.slice((page - 1) * itemsPerPage, page * itemsPerPage)}
-        loading={loading}
-        totalItems={galleryItems.length}
-        page={page}
-        itemsPerPage={itemsPerPage}
-        onPageChange={(_, value) => setPage(value)}
-        onEdit={(item) => {
-          setCurrentItem(item);
-          setFormData({
-            title: item.title,
-            hindiTitle: item.hindiTitle || '',
-            teluguTitle: item.teluguTitle || '',
-            date: item.date,
-            time: item.time,
-            image: item.image || null,
-          });
-        }}
-        onDelete={(item) => handleDelete(item._id)}
-        selectedItems={selectedItems}
-        onSelectionChange={handleSelectionChange}
-      />
+      {activeTab === 0 ? (
+        <>
+          <GalleryForm
+            formData={formData}
+            currentItem={currentItem}
+            loading={loading}
+            categories={categories}
+            onChange={setFormData}
+            onSubmit={handleSubmit}
+            onReset={resetForm}
+            onAddNew={() => {
+              resetForm();
+              setCurrentItem(null);
+            }}
+          />
+
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 2,
+            p: 1.5,
+            backgroundColor: 'grey.50',
+            borderRadius: 1
+          }}>
+            <Box>
+              <Chip
+                label={`${selectedItems.length}/6 selected`}
+                color={selectedItems.length > 0 ? "primary" : "default"}
+                variant={selectedItems.length > 0 ? "filled" : "outlined"}
+              />
+              {selectedItems.length > 0 && (
+                <Button
+                  size="small"
+                  color="secondary"
+                  onClick={() => setSelectedItems([])}
+                  sx={{ ml: 1 }}
+                >
+                  Clear Selection
+                </Button>
+              )}
+            </Box>
+
+            <Button
+              variant="contained"
+              disabled={selectedItems.length === 0}
+              onClick={() => setConfirmDialog({
+                open: true,
+                title: "Set as Homepage Gallery",
+                message: `Are you sure you want to set ${selectedItems.length} image(s) as the homepage gallery? These images will be displayed on your website's landing page.`
+              })}
+              sx={{
+                backgroundColor: '#76030F',
+                '&:hover': { backgroundColor: '#5a020c' }
+              }}
+            >
+              Set as Homepage Gallery
+            </Button>
+          </Box>
+
+          <GalleryTable
+            data={galleryItems.slice((page - 1) * itemsPerPage, page * itemsPerPage)}
+            loading={loading}
+            totalItems={galleryItems.length}
+            page={page}
+            itemsPerPage={itemsPerPage}
+            categories={categories}
+            onPageChange={(_, value) => setPage(value)}
+            onEdit={(item) => {
+              setCurrentItem(item);
+              setFormData({
+                title: item.title,
+                hindiTitle: item.hindiTitle || '',
+                teluguTitle: item.teluguTitle || '',
+                date: item.date,
+                time: item.time,
+                image: item.image || null,
+                categoryId: item.categoryId || null
+              });
+            }}
+            onDelete={(item) => handleDelete(item._id)}
+            selectedItems={selectedItems}
+            onSelectionChange={handleSelectionChange}
+          />
+        </>
+      ) : (
+        <CategoryManager
+          categories={categories}
+          onCategoryUpdate={handleCategoryUpdate}
+        />
+      )}
 
       {/* Confirmation Dialog */}
       <Dialog
@@ -237,6 +278,10 @@ const Gallery = () => {
             onClick={handleSetHomepageGallery}
             variant="contained"
             disabled={saving}
+            sx={{
+              backgroundColor: '#76030F',
+              '&:hover': { backgroundColor: '#5a020c' }
+            }}
           >
             {saving ? 'Setting...' : 'Confirm'}
           </Button>

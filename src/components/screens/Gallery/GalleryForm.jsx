@@ -12,22 +12,21 @@ import {
   InputAdornment,
   CircularProgress,
   IconButton,
-  Snackbar,
   Alert,
-  Paper as MuiPaper,
-  IconButton as MuiIconButton,
-  AlertTitle
+  MenuItem,
+  Select
 } from '@mui/material';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Add as AddIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
+import { Add as AddIcon, Close as CloseIcon } from '@mui/icons-material';
 import { format, parse } from 'date-fns';
 
 const GalleryForm = ({
   formData,
   currentItem,
   loading,
+  categories,
   onChange,
   onSubmit,
   onReset,
@@ -37,22 +36,18 @@ const GalleryForm = ({
   const [imageError, setImageError] = useState('');
   const [imageRequirements] = useState({
     maxSizeMB: 1,
-    requiredWidth: 800,  // Set your required dimensions
+    requiredWidth: 800,
     requiredHeight: 600
   });
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     onChange({ ...formData, [name]: value });
   };
 
-  // const handleFileChange = (e) => {
-  //   if (e.target.files[0]) {
-  //     onChange({ ...formData, image: e.target.files[0] });
-  //   }
-  // };
-
+  const handleCategoryChange = (e) => {
+    onChange({ ...formData, categoryId: e.target.value });
+  };
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -60,19 +55,16 @@ const GalleryForm = ({
 
     setImageError('');
 
-    // 1. Check if file is an image
     if (!file.type.startsWith('image/')) {
       setImageError('Please upload an image file');
       return;
     }
 
-    // 2. Check file size (1MB = 1024*1024 bytes)
     if (file.size > imageRequirements.maxSizeMB * 1024 * 1024) {
       setImageError(`Image must be less than ${imageRequirements.maxSizeMB}MB`);
       return;
     }
 
-    // 3. Check image dimensions
     const img = new Image();
     img.onload = () => {
       if (img.width !== imageRequirements.requiredWidth ||
@@ -81,7 +73,6 @@ const GalleryForm = ({
           `Image must be exactly ${imageRequirements.requiredWidth}px × ${imageRequirements.requiredHeight}px`
         );
       } else {
-        // All validations passed
         onChange({ ...formData, image: file });
       }
       URL.revokeObjectURL(img.src);
@@ -95,8 +86,6 @@ const GalleryForm = ({
     img.src = URL.createObjectURL(file);
   };
 
-
-
   const removeImage = () => {
     onChange({ ...formData, image: null });
   };
@@ -107,16 +96,13 @@ const GalleryForm = ({
       : URL.createObjectURL(formData.image)
     : null;
 
-  // Add these conversion functions
   const parseApiDate = (dateString) => {
     if (!dateString) return null;
-    // Adjust the format to match your API's date format (e.g., 'dd-MM-yyyy')
     return parse(dateString, 'dd-MM-yyyy', new Date());
   };
 
   const parseApiTime = (timeString) => {
     if (!timeString) return null;
-    // Adjust the format to match your API's time format (e.g., 'hh:mm a')
     return parse(timeString, 'hh:mm a', new Date());
   };
 
@@ -125,7 +111,6 @@ const GalleryForm = ({
     return format(date, formatStr);
   };
 
-  // Update your handleDateChange and handleTimeChange
   const handleDateChange = (date) => {
     onChange({
       ...formData,
@@ -282,19 +267,25 @@ const GalleryForm = ({
                 sx={{ mb: 2 }}
               />
 
-              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                {/* <DatePicker
-                  label="Date"
-                  value={formData.date}
-                  onChange={handleDateChange}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                    />
-                  )}
-                /> */}
+              {/* Category Dropdown */}
+              <FormControl fullWidth margin="normal" sx={{ mb: 2 }}>
+                <FormLabel component="legend">Category (Optional)</FormLabel>
+                <Select
+                  value={formData.categoryId || ''}
+                  onChange={handleCategoryChange}
+                  displayEmpty
+                  name="categoryId"
+                >
+                  <MenuItem value="null">No Category</MenuItem>
+                  {categories.map((category) => (
+                    <MenuItem key={category._id} value={category._id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
+              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                 <DatePicker
                   label="Date"
                   value={formData.date ? parseApiDate(formData.date) : null}
@@ -312,18 +303,6 @@ const GalleryForm = ({
                     <TextField {...params} fullWidth />
                   )}
                 />
-
-                {/* <TimePicker
-                  label="Time"
-                  value={formData.time}
-                  onChange={handleTimeChange}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                    />
-                  )}
-                /> */}
               </Box>
 
               <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>

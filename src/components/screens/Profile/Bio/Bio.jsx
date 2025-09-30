@@ -94,7 +94,8 @@ const BioScreen = () => {
         description: '',
         descriptionHindi: '',
         descriptionTelugu: '',
-        profileImage: null
+        profileImage: null,
+        designation: ''
     });
 
     // Fetch bio data on component mount
@@ -113,7 +114,9 @@ const BioScreen = () => {
                     description: bio.description || '',
                     descriptionHindi: bio.descriptionHindi || '',
                     descriptionTelugu: bio.descriptionTelugu || '',
+                    designation: bio.designation || '',
                     profileImage: null
+
                 });
                 if (bio.profileImage) {
                     setImagePreview(bio.profileImage);
@@ -207,6 +210,7 @@ const BioScreen = () => {
                 description: bioData?.description || '',
                 descriptionHindi: bioData?.descriptionHindi || '',
                 descriptionTelugu: bioData?.descriptionTelugu || '',
+                designation: bioData?.designation || '',
                 profileImage: null
             });
             setSelectedImage(null);
@@ -315,6 +319,19 @@ const BioScreen = () => {
                                             </Box>
                                         </Grid>
                                         <Grid item xs={12} md={8}>
+
+                                            <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>
+                                                Designation
+                                            </Typography>
+                                            <TextField
+                                                name="designation"
+                                                value={formData.designation}
+                                                onChange={handleInputChange}
+                                                fullWidth
+                                                required
+                                                sx={{ mb: 2, width: '80vw', maxWidth: 900 }}
+                                            />
+
                                             <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>
                                                 Bio in English
                                             </Typography>
@@ -384,6 +401,14 @@ const BioScreen = () => {
                                         </Card>
                                     </Grid>
                                     <Grid item xs={12} md={8}>
+
+                                        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 500, color: 'text.primary' }}>
+                                            Designation
+                                        </Typography>
+                                        <Typography variant="body1" paragraph sx={{ width: '80vw', maxWidth: 900, lineHeight: 1.7, color: 'text.secondary', mb: 3 }}>
+                                            {bioData.designation || 'No bio designation available.'}
+                                        </Typography>
+
                                         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 500, color: 'text.primary' }}>
                                             Bio in English
                                         </Typography>

@@ -152,6 +152,17 @@ const BioForm = ({
 
                 <Grid item xs={12} md={8}>
                     <Box component="form" onSubmit={onSubmit} noValidate>
+
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Designation"
+                            name="designation"
+                            value={formData.designation}
+                            onChange={handleInputChange}
+                            sx={{ mb: 2 }}
+                        />
+
                         <TextField
                             fullWidth
                             margin="normal"

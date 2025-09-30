@@ -29,6 +29,15 @@ export const deleteCategory = async (categoryId) => {
     }
 };
 
+export const updateCategory = async (categoryId, categoryData) => {
+    try {
+        const response = await apiClient.put(`${NATIONAL_POLITICS_ENDPOINT}/update/category/${categoryId}`, categoryData);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const getPosts = async () => {
     try {
         const response = await apiClient.get(`${NATIONAL_POLITICS_ENDPOINT}/gallery`);

@@ -62,6 +62,19 @@ const NationalPolitics = () => {
         }
     };
 
+    // Add this new function for updating categories
+    const handleUpdateCategory = async (categoryId, updatedName) => {
+        try {
+            await nationalPoliticsService.updateCategory(categoryId, { name: updatedName });
+            await fetchCategories();
+            showSnackbar('Category updated successfully');
+            return true;
+        } catch (error) {
+            showSnackbar('Error updating category', 'error');
+            return false;
+        }
+    };
+
     const handleDeleteCategory = async (categoryId) => {
         try {
             await nationalPoliticsService.deleteCategory(categoryId);
@@ -143,6 +156,7 @@ const NationalPolitics = () => {
                 <CategoryManager
                     categories={categories}
                     onCreateCategory={handleCreateCategory}
+                    onUpdateCategory={handleUpdateCategory} // Add this prop
                     onDeleteCategory={handleDeleteCategory}
                 />
             )}
