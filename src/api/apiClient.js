@@ -15,18 +15,18 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
   //  Post requests are disabled temporarily
-    // if (config && config.method && config.method.toLowerCase() === 'post') {
-    //   // Notify user in UI
-    //   try {
-    //     showErrorToast('Server error');
-    //   } catch (e) {
-    //     // swallow errors from toast so request handling is not impacted
-    //   }
+    if (config && config.method && config.method.toLowerCase() === 'post') {
+      // Notify user in UI
+      try {
+        showErrorToast('Server error');
+      } catch (e) {
+        // swallow errors from toast so request handling is not impacted
+      }
 
-    //   const err = new Error('Server error.');
-    //   err.code = 'POST_DISABLED';
-    //   return Promise.reject(err);
-    // }
+      const err = new Error('Server error.');
+      err.code = 'POST_DISABLED';
+      return Promise.reject(err);
+    }
 
     // How to enable uploads again:
     // 1. Remove the above block that rejects POST requests.
