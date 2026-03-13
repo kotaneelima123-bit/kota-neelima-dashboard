@@ -79,6 +79,10 @@ const navItems = [
     ]
   },
   { name: 'Podcast', path: '/podcast' },
+  { name: 'Volunteer', path: '/volunteer' },
+  { name: 'Grievance', path: '/grievance' },
+
+
 
 ];
 

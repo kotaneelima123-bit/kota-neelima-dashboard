@@ -26,6 +26,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import PhotosScreen from './components/screens/Profile/Photos/PhotosScreen';
 import ArticleScreen from './components/screens/Profile/Articles/ArticleScreen';
 import Podcast from './components/screens/Podcast/Podcast';
+import VolunteerManagement from './components/screens/Volunteer/VolunteerManagement';
+import GrievanceManagement from './components/screens/Grievance/GrievanceManagement';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -71,6 +73,10 @@ function App() {
             <Route path="profile/photos" element={<PhotosScreen />} />
             <Route path="profile/articles" element={<ArticleScreen />} />
             <Route path="podcast" element={<Podcast />} />
+            <Route path="volunteer" element={<VolunteerManagement />} />
+            <Route path="grievance" element={<GrievanceManagement />} />
+
+
 
 
 
