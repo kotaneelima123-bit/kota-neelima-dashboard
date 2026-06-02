@@ -67,14 +67,17 @@ const GalleryForm = ({
 
     const img = new Image();
     img.onload = () => {
-      if (img.width !== imageRequirements.requiredWidth ||
-        img.height !== imageRequirements.requiredHeight) {
-        setImageError(
-          `Image must be exactly ${imageRequirements.requiredWidth}px × ${imageRequirements.requiredHeight}px`
-        );
-      } else {
-        onChange({ ...formData, image: file });
-      }
+      // Width/height validation is temporarily disabled.
+      // To enable it again later, uncomment this block and remove the direct onChange below.
+      // if (img.width !== imageRequirements.requiredWidth ||
+      // img.height !== imageRequirements.requiredHeight) {
+      // setImageError(
+      // `Image must be exactly ${imageRequirements.requiredWidth}px × ${imageRequirements.requiredHeight}px`
+      // );
+      // } else {
+      // onChange({ ...formData, image: file });
+      // }
+      onChange({ ...formData, image: file });
       URL.revokeObjectURL(img.src);
     };
 
