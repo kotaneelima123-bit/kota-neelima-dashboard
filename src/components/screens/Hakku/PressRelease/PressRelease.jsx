@@ -11,6 +11,7 @@ const PressRelease = () => {
         description: '',
         url: '',
     });
+    const [pdfFile, setPdfFile] = useState(null);
     const [currentItem, setCurrentItem] = useState(null);
     const [pressItems, setPressItems] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -39,12 +40,19 @@ const PressRelease = () => {
         e.preventDefault();
         setLoading(true);
         try {
+            // Build FormData so we can optionally attach a PDF
+            const payload = new FormData();
+            payload.append('title', formData.title);
+            payload.append('description', formData.description);
+            payload.append('url', formData.url);
+            if (pdfFile) {
+                payload.append('pdf', pdfFile);
+            }
+
             if (currentItem) {
-                await hakkuPressReleaseService.updatePressItem(currentItem._id, formData);
-
+                await hakkuPressReleaseService.updatePressItem(currentItem._id, payload);
             } else {
-                await hakkuPressReleaseService.createPressItem(formData);
-
+                await hakkuPressReleaseService.createPressItem(payload);
             }
             await fetchPressItems();
             resetForm();
@@ -74,6 +82,7 @@ const PressRelease = () => {
             description: '',
             url: '',
         });
+        setPdfFile(null);
         setCurrentItem(null);
     };
 
@@ -90,6 +99,8 @@ const PressRelease = () => {
                     resetForm();
                     setCurrentItem(null);
                 }}
+                pdfFile={pdfFile}
+                onPdfChange={setPdfFile}
             />
 
             <PressReleaseTable
@@ -101,6 +112,7 @@ const PressRelease = () => {
                 onPageChange={(_, value) => setPage(value)}
                 onEdit={(item) => {
                     setCurrentItem(item);
+                    setPdfFile(null);
                     setFormData({
                         title: item.title,
                         description: item.description,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
     Box,
     Button,
@@ -7,12 +7,13 @@ import {
     Paper,
     Grid,
     CircularProgress,
+    IconButton,
 } from '@mui/material';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format, parse } from 'date-fns';
-import { Add as AddIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
+import { Add as AddIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon, UploadFile as UploadFileIcon } from '@mui/icons-material';
 
 
 const PressReleaseForm = ({
@@ -23,7 +24,10 @@ const PressReleaseForm = ({
     onSubmit,
     onReset,
     onAddNew,
+    onPdfChange,
+    pdfFile,
 }) => {
+    const pdfInputRef = useRef(null);
     // Date conversion functions
     // const parseApiDate = (dateString) => {
     //     if (!dateString) return null;
@@ -43,6 +47,17 @@ const PressReleaseForm = ({
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         onChange({ ...formData, [name]: value });
+    };
+
+    const handlePdfSelect = (e) => {
+        const file = e.target.files[0] || null;
+        onPdfChange(file);
+        // reset input so selecting same file again triggers change
+        e.target.value = '';
+    };
+
+    const handleRemovePdf = () => {
+        onPdfChange(null);
     };
 
     // const handleDateChange = (date) => {
@@ -118,6 +133,45 @@ const PressReleaseForm = ({
                                 onChange={handleInputChange}
                                 sx={{ mb: 2 }}
                             />
+
+                            {/* PDF Upload (optional) */}
+                            <input
+                                ref={pdfInputRef}
+                                type="file"
+                                accept="application/pdf"
+                                style={{ display: 'none' }}
+                                onChange={handlePdfSelect}
+                            />
+                            <Box sx={{ mb: 2 }}>
+                                <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary' }}>
+                                    PDF File (optional)
+                                </Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<UploadFileIcon />}
+                                        onClick={() => pdfInputRef.current.click()}
+                                        size="small"
+                                    >
+                                        {pdfFile ? 'Change PDF' : 'Upload PDF'}
+                                    </Button>
+                                    {pdfFile && (
+                                        <>
+                                            <Typography variant="body2" sx={{ color: 'text.primary', maxWidth: 260, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                {pdfFile.name}
+                                            </Typography>
+                                            <IconButton size="small" onClick={handleRemovePdf} aria-label="Remove PDF">
+                                                <CloseIcon fontSize="small" />
+                                            </IconButton>
+                                        </>
+                                    )}
+                                    {!pdfFile && currentItem?.pdf && (
+                                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                            Current: <a href={currentItem.pdf} target="_blank" rel="noopener noreferrer">View PDF</a>
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </Box>
 
                             {/* <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                                 <DatePicker

@@ -14,7 +14,10 @@ export const getPressItems = async () => {
 
 export const createPressItem = async (itemData) => {
     try {
-        const response = await apiClient.post(`${HAKKU_ENDPOINT}/press-release/create`, itemData);
+        const isFormData = itemData instanceof FormData;
+        const response = await apiClient.post(`${HAKKU_ENDPOINT}/press-release/create`, itemData, {
+            headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
+        });
         showSuccessToast('Press item created successfully!');
         return response;
     } catch (error) {
@@ -24,7 +27,10 @@ export const createPressItem = async (itemData) => {
 
 export const updatePressItem = async (_id, itemData) => {
     try {
-        const response = await apiClient.put(`${HAKKU_ENDPOINT}/press-release/update/${_id}`, itemData);
+        const isFormData = itemData instanceof FormData;
+        const response = await apiClient.put(`${HAKKU_ENDPOINT}/press-release/update/${_id}`, itemData, {
+            headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
+        });
         showSuccessToast('Press item updated successfully!');
         return response;
     } catch (error) {
